@@ -164,6 +164,7 @@ class semilla
         this.x+=this.izq;
        
     }
+   
 
     draw()
     {
@@ -330,6 +331,15 @@ class nube_der_izq
         this.image.src=images.nubesita;
 
     }
+
+    estatocando(item)
+    {
+        return  (this.x < item.x + item.width) &&
+                (this.x + this.width > item.x) &&
+                (this.y < item.y + item.height) &&
+                (this.y + this.height > item.y);
+    }
+    
     draw()
     {
         //console.log(this.x)
@@ -406,8 +416,10 @@ function update()
        
         
         dibujarNube();
-        console.log(numRanAlto);
-        console.log("la dif es "+dificultad_jug1);
+        //console.log(numRanAlto);
+        //console.log("la dif es "+dificultad_jug1);
+       // checarColision();
+       colision();
 
     }
 
@@ -474,6 +486,7 @@ function drawSemi()
 {
     avioncito.dispara.forEach(function(b) {
     b.draw();
+    
 });
     
 }
@@ -769,6 +782,30 @@ function dibujarNube()
         
     })
 }
+
+function colision()
+{
+    nubder.forEach(function(b){
+        avioncito.dispara.forEach(function(c){
+            if(b.estatocando(c))
+            {
+                num_sem=0;
+                avioncito.dispara=[]
+            }
+        })
+    })
+}
+
+/*
+nubes.forEach((nube)=>{
+    semillas.forEach((semilla)=>{
+        if(nube.isTouching(semilla)){
+            //hago algo 
+        }
+    })
+})
+*/
+
 
 function checarTiempo()
 {
