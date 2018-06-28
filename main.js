@@ -447,6 +447,7 @@ function checarTiempo()
             
             //console.log(instru.id)
             jugador1=2;
+            avioncito.dispara=[];
             
             
        
