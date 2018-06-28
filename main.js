@@ -38,7 +38,7 @@ var jugador1=0;
 var nubder=[];
 var nubizq=[];
 var dificultad_jug1=10;
-var dificultad_jug2=1;
+var dificultad_jug2=10;
 var numRanAlto=0;
 var numRanAncho=0;
 var numRanPosX=0;
@@ -414,6 +414,8 @@ function update()
 function start()
     {
         //crearNubeDeraIzq();
+        nubder=[];
+
         num_sem=0
         ctx.clearRect(0,0,canvas.width,canvas.height);
         if(interval) return;
@@ -437,19 +439,21 @@ function start()
         drawArbol2();
         checarTiempo2();
         //console.log(niv_conta2)
-        defini_dif2();
+        //defini_dif2();
         //|console.log(dificultad_jug2)
+        defini_dif2();
+        dibujarNube();
+        console.log("jaja"+niv_conta2)
+        console.log(nubder.length)
     }
 
 function start2()
     {
+       restaurarVar();
         num_sem2=0;
         ctx.clearRect(0,0,canvas.width,canvas.height);
         if(interval2) return;
         interval2 = setInterval(update2, 1000/60);
-        
-        
-       
     }   
 
 
@@ -515,6 +519,16 @@ function drawArbol2()
     arboles2.forEach(function(b){
         b.draw();
     })
+}
+function restaurarVar()
+{
+    console.log("bu")
+    niv1=0;
+    niv2=0;
+    niv3=0;
+    niv4=0;
+    niv5=0;
+    nubder=[];
 }
 
 function defini_dif()
@@ -594,6 +608,85 @@ function defini_dif()
         }
     }
 }
+
+function defini_dif2()
+{
+    
+    if(niv_conta2>=80)
+    {
+        //console.log("si entra wey")
+        dificultad_jug2=10
+        if(niv1==0)
+        {
+            nubder=[]
+            crearNubeju2();
+            niv1=1
+        }
+        
+    }
+    else
+    {
+        if(niv_conta2>=60)
+        {
+            dificultad_jug2=20
+                    if(niv2==0)
+                {
+                    nubder=[]
+                    crearNubeju2();
+                    niv2=1
+                       
+                }
+        }
+        else
+        {
+            if(niv_conta2>=40)
+            {
+                dificultad_jug2=30
+                if(niv3==0)
+                    {
+                        nubder=[]
+                        crearNubeju2();
+                    
+                        niv3=1
+                
+                    
+                    }
+            }
+            else
+            {
+                if(niv_conta2>=20)
+                {
+                    dificultad_jug2=40
+                           
+                    if(niv4==0)
+                         {
+                             nubder=[]
+                            crearNubeju2();
+                            niv4=1
+                
+                    
+                        }
+                }
+                else
+                {
+                    if(niv_conta2>=0)
+                    {
+                        dificultad_jug2=50
+                        if(niv5==0)
+                        {
+                            nubder=[]
+                            crearNubeju2();
+                            niv5=1
+        
+                    
+                        }
+                     }
+                }
+            }
+        }
+    }
+}
+   
        
 
 function ran_posx()
@@ -638,6 +731,23 @@ function crearNubeDeraIzq()
     
         //console.log(dificultad_jug1);
     for(var i=0;i<dificultad_jug1;i++)
+    {
+        ran_Alto();
+        ran_ancho();
+        ran_posx();
+        ran_posy();
+        ran_Vel();
+        var nubecita=new nube_der_izq(numRanPosX,numRanPosY,numRanAncho,numRanAlto,numRanVel)
+        nubder.push(nubecita);
+    }
+    
+}
+
+function crearNubeju2()
+{
+    
+        //console.log(dificultad_jug1);
+    for(var i=0;i<dificultad_jug2;i++)
     {
         ran_Alto();
         ran_ancho();
