@@ -34,7 +34,7 @@ var tiempo=1;
 var tiempo2=1;
 //var comienzo=0;
 //var tiempo_real=0;
-var jugador1=true;
+var jugador1=0;
 
 
 
@@ -274,6 +274,7 @@ class Texto_tiempo
        // console.log(tiempo_real)
         ctx.font="50px Arial";
         ctx.fillText((7-tiempo)+" s",this.x,this.y)
+        console.log(tiempo)
     }
 
 }
@@ -333,7 +334,7 @@ function update()
         //console.log(tiempo);
         textito_tiempo.draw();
         checarTiempo();
-        console.log(niv_conta)
+        //console.log(niv_conta)
     }
 
 function start()
@@ -357,7 +358,7 @@ function start()
         drawSemi2();
         drawArbol2();
         checarTiempo2();
-        console.log(niv_conta2)
+        //console.log(niv_conta2)
     }
 
 function start2()
@@ -439,15 +440,15 @@ function checarTiempo()
 {
     if(tiempo==7)
     {
-        document.getElementById("titulo").innerHTML="presiona";
-        document.getElementById('titulo').addEventListener('click', function(){
+        document.getElementById("titulo").innerHTML="Segundo Jugador presiona 2 para comenzar";
+        
             //this.innerHTML = "presina"
-            document.getElementById("titulo").innerHTML="ESTA JUGANDO EL JUGADOR 2";
-            instru.id = "yaNo";
-            console.log(instru.id)
-            jugador1=false;
-            start2();
-            });
+            
+            
+            //console.log(instru.id)
+            jugador1=2;
+            
+            
        
         //start2();
         clearInterval(interval);        
@@ -471,19 +472,19 @@ function checarGanador()
     if(niv_conta<niv_conta2)
     {
         
-        document.getElementById("yaNo").innerHTML="GANO EL JUGADOR UNO";
+        document.getElementById("titulo").innerHTML="GANO EL JUGADOR UNO";
         //instru.id = "seTermino";
     }
     if(niv_conta2<niv_conta)
     {
         
-        document.getElementById("yaNo").innerHTML="GANO EL JUGADOR DOS";
+        document.getElementById("titulo").innerHTML="GANO EL JUGADOR DOS";
         //instru.id = "seTermino";
     }
     if(niv_conta==niv_conta2)
     {
         
-        document.getElementById("yaNo").innerHTML="HAN QUEDADO EMPATE";
+        document.getElementById("titulo").innerHTML="HAN QUEDADO EMPATE";
         //instru.id = "seTermino";
     }
 }
@@ -504,7 +505,7 @@ addEventListener("keydown",function(e)
     //console.log("jajajajaj")
     if(e.keyCode===37)
     {
-        if(jugador1==true)
+        if(jugador1==1)
         {
             if(num_sem==0)
             {
@@ -550,7 +551,7 @@ addEventListener("keydown",function(e)
             num_sem2=0
         }
         */
-        if(jugador1==true)
+        if(jugador1==1)
         {
             if(num_sem==0)
             {
@@ -581,7 +582,7 @@ addEventListener("keydown",function(e)
     }
     if(e.keyCode===32)
     {
-        if(jugador1==true)
+        if(jugador1==1)
         {
             if(num_sem==0)
             {
@@ -613,16 +614,39 @@ addEventListener("keydown",function(e)
         }
     }
 
-    //if(e.keyCode===13)
-    //{
+    if(e.keyCode===49 || e.keyCode===97)
+    {
+        if(jugador1==0)
+        {
+            console.log("ja")
+            jugador1=1;
+            
+                document.getElementById("titulo").innerHTML = "ESTA JUGANDO EL JUGADOR 1"
+                start();
+                //instru.id = "yaNo";
+                //console.log(instru.id)
+        }
+                
+              
        
-    //}
+    }
+
+    if(e.keyCode===50 || e.keyCode===98)
+    {
+        if(jugador1==2)
+        {
+            console.log("este no")
+            document.getElementById("titulo").innerHTML = "ESTA JUGANDO EL JUGADOR 2"
+            start2();
+        }
+        
+    }
 });
 
-document.getElementById('titulo').addEventListener('click', function(){
+/*document.getElementById('titulo').addEventListener('click', function(){
     this.innerHTML = "ESTA JUGANDO EL JUGADOR 1"
     //instru.id = "yaNo";
     //console.log(instru.id)
     start();
     });
-//start();
+//start();*/
