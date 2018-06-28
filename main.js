@@ -35,6 +35,15 @@ var tiempo2=1;
 //var comienzo=0;
 //var tiempo_real=0;
 var jugador1=0;
+var nubder=[];
+var nubizq=[];
+var dificultad_jug1=10;
+var dificultad_jug2=1;
+var numRanAlto=0;
+var numRanAncho=0;
+var numRanPosX=0;
+var numRanPosY=0;
+
 
 
 
@@ -273,8 +282,8 @@ class Texto_tiempo
         //tiempo_real=tiempo_real-tiempo;
        // console.log(tiempo_real)
         ctx.font="50px Arial";
-        ctx.fillText((7-tiempo)+" s",this.x,this.y)
-        console.log(tiempo)
+        ctx.fillText((14-tiempo)+" s",this.x,this.y)
+        //console.log(tiempo)
     }
 
 }
@@ -300,6 +309,27 @@ class Texto_tiempo2
 
 }
 
+class nube_der_izq
+{
+    constructor(xnub=0,ynub=0,nubw=130,nubh=80)
+    {
+        this.x=xnub;
+        this.y=ynub;
+        this.width=nubw;
+        this.height=nubh;
+        this.image=new Image();
+        this.vY=-10
+        this.image.src=images.nubesita;
+
+    }
+    draw()
+    {
+        this.x+=this.vY;
+        ctx.drawImage(this.image,this.x,this.y,this.width,this.height);
+    }
+    
+}
+
 
 //instancias
 
@@ -312,6 +342,8 @@ var textito=new Texto();
 var textito2=new Texto2();
 var textito_tiempo=new Texto_tiempo();
 var textito2_tiempo=new Texto_tiempo2();
+//var nubesita1=new nube();
+//var nubesita2=new nube(100,100,80,50);
 
 
 
@@ -335,15 +367,28 @@ function update()
         textito_tiempo.draw();
         checarTiempo();
         //console.log(niv_conta)
+        //nubesita1.draw();
+        //nubesita2.draw();
+        defini_dif();
+        //console.log(niv_conta)
+        //console.log("la dif es "+dificultad_jug1);
+        
+        dibujarNube();
+        console.log(numRanAlto);
+
     }
 
 function start()
     {
+        crearNubeDeraIzq();
         num_sem=0
         ctx.clearRect(0,0,canvas.width,canvas.height);
         if(interval) return;
         interval = setInterval(update, 1000/60);
        // ctx.arbolito_1;
+      
+      
+
     }
 
     function update2()
@@ -359,6 +404,8 @@ function start()
         drawArbol2();
         checarTiempo2();
         //console.log(niv_conta2)
+        defini_dif2();
+        //|console.log(dificultad_jug2)
     }
 
 function start2()
@@ -367,6 +414,7 @@ function start2()
         ctx.clearRect(0,0,canvas.width,canvas.height);
         if(interval2) return;
         interval2 = setInterval(update2, 1000/60);
+        
         
        
     }   
@@ -436,9 +484,152 @@ function drawArbol2()
     })
 }
 
+function defini_dif()
+{
+    
+    if(niv_conta>=80)
+    {
+        //console.log("si entra wey")
+        dificultad_jug1=10
+        
+    }
+    else
+    {
+        if(niv_conta>=60)
+        {
+            dificultad_jug1=20
+        
+        }
+        else
+        {
+            if(niv_conta>=40)
+            {
+                dificultad_jug1=30
+            
+            }
+            else
+            {
+                if(niv_conta>=20)
+                {
+                    dificultad_jug1=40
+            
+                }
+                else
+                {
+                    if(niv_conta>=0)
+                    {
+                        dificultad_jug1=50
+                    
+                    }
+                }
+            }
+        }
+    }
+}
+
+function defini_dif2()
+{
+    
+    if(niv_conta2>=80)
+    {
+        //console.log("si entra wey")
+        dificultad_jug2=10
+        
+    }
+    else
+    {
+        if(niv_conta2>=60)
+        {
+            dificultad_jug2=20
+        
+        }
+        else
+        {
+            if(niv_conta2>=40)
+            {
+                dificultad_jug2=30
+            
+            }
+            else
+            {
+                if(niv_conta2>=20)
+                {
+                    dificultad_jug2=40
+            
+                }
+                else
+                {
+                    if(niv_conta2>=0)
+                    {
+                        dificultad_jug2=50
+                    
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+function ran_posx()
+{
+     numRanPosX=Math.floor(Math.random()*canvas.width);
+}
+
+function ran_posy()
+{
+     numRanPosY=Math.floor(Math.random()*canvas.height-100);
+     if(numRanPosY<70)
+     {
+         numRanPosY=numRanPosY+70;
+     }
+}
+
+function ran_ancho()
+{
+     numRanAncho=Math.floor(Math.random()*130);
+    if(numRanAncho<80)
+    {
+        numRanAncho=numRanAncho+50;
+    }
+}
+
+function ran_Alto()
+{
+    numRanAlto=Math.floor(Math.random()*80);
+    if(numRanAlto<50)
+    {
+        numRanAlto=numRanAlto+30
+    }
+}
+
+
+function crearNubeDeraIzq()
+{
+    
+        //console.log(dificultad_jug1);
+    for(var i=0;i<dificultad_jug1;i++)
+    {
+        ran_Alto();
+        ran_ancho();
+        ran_posx();
+        ran_posy();
+        var nubecita=new nube_der_izq(numRanPosX,numRanPosY,numRanAncho,numRanAlto)
+        nubder.push(nubecita);
+    }
+    
+}
+
+function dibujarNube()
+{
+    nubder.forEach(function(b){
+        b.draw();
+    })
+}
+
 function checarTiempo()
 {
-    if(tiempo==7)
+    if(tiempo==21)
     {
         document.getElementById("titulo").innerHTML="Segundo Jugador presiona 2 para comenzar";
         
