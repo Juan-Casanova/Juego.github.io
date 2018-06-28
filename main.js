@@ -44,8 +44,13 @@ var numRanAncho=0;
 var numRanPosX=0;
 var numRanPosY=0;
 var numRanVel=5;
-var llendo_der=true;
+var llendo_der=false;
 var reductorTiempo=30;
+var niv1=0;
+var niv2=0;
+var niv3=0;
+var niv4=0;
+var niv5=0;
 
 
 
@@ -330,24 +335,29 @@ class nube_der_izq
         //console.log(this.x)
          
         
-        if(llendo_der==true)
+       /* if(llendo_der==true)
         {
             this.x-=this.vY
-        }
+        }*/
         if(llendo_der==false)
         {
             this.x+=this.vY;
         }
+
+        if(this.x>=canvas.width)
+        {
+            this.x=0;
+        }
         //this.x-=this.vY;
         ctx.drawImage(this.image,this.x,this.y,this.width,this.height);
-        if(this.x<=0)
+       /* if(this.x<=0)
         {
             llendo_der=false;
         }
         if(this.x>=canvas.width)
         {
             llendo_der=true;
-        }
+        }*/
     }
     
 }
@@ -393,16 +403,17 @@ function update()
         //nubesita2.draw();
         defini_dif();
         //console.log(niv_conta)
-        //console.log("la dif es "+dificultad_jug1);
+       
         
         dibujarNube();
         console.log(numRanAlto);
+        console.log("la dif es "+dificultad_jug1);
 
     }
 
 function start()
     {
-        crearNubeDeraIzq();
+        //crearNubeDeraIzq();
         num_sem=0
         ctx.clearRect(0,0,canvas.width,canvas.height);
         if(interval) return;
@@ -513,6 +524,12 @@ function defini_dif()
     {
         //console.log("si entra wey")
         dificultad_jug1=10
+        if(niv1==0)
+        {
+            nubder=[]
+            crearNubeDeraIzq();
+            niv1=1
+        }
         
     }
     else
@@ -520,78 +537,64 @@ function defini_dif()
         if(niv_conta>=60)
         {
             dificultad_jug1=20
-        
+                    if(niv2==0)
+                {
+                    nubder=[]
+                    crearNubeDeraIzq();
+                    niv2=1
+                       
+                }
         }
         else
         {
             if(niv_conta>=40)
             {
                 dificultad_jug1=30
-            
+                if(niv3==0)
+                    {
+                        nubder=[]
+                        crearNubeDeraIzq();
+                    
+                        niv3=1
+                
+                    
+                    }
             }
             else
             {
                 if(niv_conta>=20)
                 {
                     dificultad_jug1=40
-            
+                           
+                    if(niv4==0)
+                         {
+                             nubder=[]
+                            crearNubeDeraIzq();
+                            niv4=1
+                
+                    
+                        }
                 }
                 else
                 {
                     if(niv_conta>=0)
                     {
                         dificultad_jug1=50
+                        if(niv5==0)
+                        {
+                            nubder=[]
+                            crearNubeDeraIzq();
+                            niv5=1
+        
                     
-                    }
+                        }
+                     }
                 }
             }
         }
     }
 }
-
-function defini_dif2()
-{
-    
-    if(niv_conta2>=80)
-    {
-        //console.log("si entra wey")
-        dificultad_jug2=10
-        
-    }
-    else
-    {
-        if(niv_conta2>=60)
-        {
-            dificultad_jug2=20
-        
-        }
-        else
-        {
-            if(niv_conta2>=40)
-            {
-                dificultad_jug2=30
-            
-            }
-            else
-            {
-                if(niv_conta2>=20)
-                {
-                    dificultad_jug2=40
-            
-                }
-                else
-                {
-                    if(niv_conta2>=0)
-                    {
-                        dificultad_jug2=50
-                    
-                    }
-                }
-            }
-        }
-    }
-}
-
+       
 
 function ran_posx()
 {
@@ -600,11 +603,10 @@ function ran_posx()
 
 function ran_posy()
 {
-     numRanPosY=Math.floor(Math.random()*canvas.height-75);
-     if(numRanPosY<400)
-     {
-         numRanPosY=numRanPosY+100;
-     }
+     numRanPosY=Math.floor(Math.random()*(canvas.height-250));
+     
+         numRanPosY=numRanPosY+150;
+     
 }
 
 function ran_ancho()
