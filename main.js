@@ -43,6 +43,9 @@ var numRanAlto=0;
 var numRanAncho=0;
 var numRanPosX=0;
 var numRanPosY=0;
+var numRanVel=5;
+var llendo_der=true;
+var reductorTiempo=30;
 
 
 
@@ -282,7 +285,7 @@ class Texto_tiempo
         //tiempo_real=tiempo_real-tiempo;
        // console.log(tiempo_real)
         ctx.font="50px Arial";
-        ctx.fillText((14-tiempo)+" s",this.x,this.y)
+        ctx.fillText((reductorTiempo-tiempo)+" s",this.x,this.y)
         //console.log(tiempo)
     }
 
@@ -304,28 +307,47 @@ class Texto_tiempo2
         //tiempo_real=tiempo_real-tiempo;
        // console.log(tiempo_real)
         ctx.font="50px Arial";
-        ctx.fillText((7-tiempo2)+" s",this.x,this.y)
+        ctx.fillText((reductorTiempo-tiempo2)+" s",this.x,this.y)
     }
 
 }
 
 class nube_der_izq
 {
-    constructor(xnub=0,ynub=0,nubw=130,nubh=80)
+    constructor(xnub=0,ynub=0,nubw=130,nubh=80,vel=5)
     {
         this.x=xnub;
         this.y=ynub;
         this.width=nubw;
         this.height=nubh;
         this.image=new Image();
-        this.vY=-10
+        this.vY=vel;
         this.image.src=images.nubesita;
 
     }
     draw()
     {
-        this.x+=this.vY;
+        //console.log(this.x)
+         
+        
+        if(llendo_der==true)
+        {
+            this.x-=this.vY
+        }
+        if(llendo_der==false)
+        {
+            this.x+=this.vY;
+        }
+        //this.x-=this.vY;
         ctx.drawImage(this.image,this.x,this.y,this.width,this.height);
+        if(this.x<=0)
+        {
+            llendo_der=false;
+        }
+        if(this.x>=canvas.width)
+        {
+            llendo_der=true;
+        }
     }
     
 }
@@ -578,10 +600,10 @@ function ran_posx()
 
 function ran_posy()
 {
-     numRanPosY=Math.floor(Math.random()*canvas.height-100);
-     if(numRanPosY<70)
+     numRanPosY=Math.floor(Math.random()*canvas.height-75);
+     if(numRanPosY<400)
      {
-         numRanPosY=numRanPosY+70;
+         numRanPosY=numRanPosY+100;
      }
 }
 
@@ -602,6 +624,11 @@ function ran_Alto()
         numRanAlto=numRanAlto+30
     }
 }
+function ran_Vel()
+{
+    numRanVel=Math.random()*7;
+   
+}
 
 
 function crearNubeDeraIzq()
@@ -614,7 +641,8 @@ function crearNubeDeraIzq()
         ran_ancho();
         ran_posx();
         ran_posy();
-        var nubecita=new nube_der_izq(numRanPosX,numRanPosY,numRanAncho,numRanAlto)
+        ran_Vel();
+        var nubecita=new nube_der_izq(numRanPosX,numRanPosY,numRanAncho,numRanAlto,numRanVel)
         nubder.push(nubecita);
     }
     
@@ -623,13 +651,16 @@ function crearNubeDeraIzq()
 function dibujarNube()
 {
     nubder.forEach(function(b){
+        
+       
         b.draw();
+        
     })
 }
 
 function checarTiempo()
 {
-    if(tiempo==21)
+    if(tiempo==reductorTiempo)
     {
         document.getElementById("titulo").innerHTML="Segundo Jugador presiona 2 para comenzar";
         
@@ -652,7 +683,7 @@ function checarTiempo()
 
 function checarTiempo2()
 {
-    if(tiempo2==7)
+    if(tiempo2==reductorTiempo)
     {
         checarGanador();
         clearInterval(interval2);
