@@ -25,8 +25,12 @@ var images=
         nubesita4:"./imagenes/nubesita4.png",
         nubesita5:"./imagenes/nubesita5.png",
         arbolito_1:"./imagenes/Arbol_grande.png",
+        arbolito_2:"./imagenes/pino.png",
+        arbolito_3:"./imagenes/arbol2.png",
         avion:"./imagenes/avioncito.png",
-        semilla1:"./imagenes/semilla.png"
+        semilla1:"./imagenes/semilla.png",
+        semilla2:"./imagenes/semilla2.png",
+        semilla3:"./imagenes/semilla3.png"
     }
 var num_sem=-1;
 var num_sem2=-1;
@@ -66,6 +70,10 @@ var niv44=0;
 var niv55=0;
 var nubes=images.nubesita;
 var cielo=images.fondo1;
+var velYSem=5;
+var tiposem=images.semilla;
+var tipoarbol=images.arbolito_1;
+var img=0;
 
 
 
@@ -182,7 +190,7 @@ class avion
 
 class semilla
 {
-    constructor(as)
+    constructor(as,vely=3,imgsem=images.semilla1)
     {
         
         this.width=35;
@@ -192,8 +200,8 @@ class semilla
         this.der=+20;
         this.izq=-20
         this.image=new Image();
-        this.vY=+5;
-        this.image.src=images.semilla1;
+        this.vY=vely;
+        this.image.src=imgsem;
         this.image.onload=function()
         {
             this.draw();
@@ -236,7 +244,7 @@ class semilla
         }
         else
         {             
-            this.y+=this.vY;
+            this.y=this.y+this.vY;
             ctx.drawImage(this.image,this.x,this.y,this.width,this.height)
             num_sem=+1;
             num_sem2=+1;
@@ -266,7 +274,7 @@ class suelo
 
 class arbolito_1
 {
-    constructor()
+    constructor(arbol=images.arbolito_1)
     {
         this.width=150;
         this.height=175;
@@ -275,7 +283,7 @@ class arbolito_1
         this.x=posx-75;
         this.y=posy-150;
         this.image=new Image();
-        this.image.src=images.arbolito_1;
+        this.image.src=arbol;
         this.image.onload=function()
         {
             this.draw();
@@ -284,6 +292,7 @@ class arbolito_1
 
     draw()
     {
+        //console.log("tengo este"+tipoarbol)
         ctx.drawImage(this.image,this.x,this.y,this.width,this.height)
     }
 }
@@ -467,7 +476,7 @@ function update()
         //console.log(numRanAlto);
         //console.log("la dif es "+dificultad_jug1);
        // checarColision();
-       //console.log(cielo)
+       //console.log(tipoarbol)
        colision();
 
     }
@@ -508,7 +517,7 @@ function start()
         defini_dif2();  
         dibujarNube();
         //console.log("jaja"+niv_conta2)
-        console.log(cielo)
+       // console.log(velYSem)
         colision()
     }
 
@@ -519,7 +528,7 @@ function start2()
         num_sem2=0;
         sonido_sem.pause();
         sound.play();
-        console.log(nubes)
+       // console.log(nubes)
         ctx.clearRect(0,0,canvas.width,canvas.height);
         if(interval2) return;
         interval2 = setInterval(update2, 1000/60);
@@ -534,8 +543,11 @@ function start2()
 
     function generarSemilla()
 {
-    
-    var semi=new semilla(avioncito)
+    //console.log("puto")
+    Random_y();
+    random_imgsem();
+    //console.log(velYSem)
+    var semi=new semilla(avioncito,velYSem,tiposem)
     avioncito.dispara.push(semi);
     sound.pause();
     sonido_sem.play();  
@@ -553,8 +565,10 @@ function drawSemi()
 
 function generarSemilla2()
 {
+    Random_y();
+    random_imgsem();
     sonido_sem.play();
-    var semi2=new semilla(avioncito)
+    var semi2=new semilla(avioncito,velYSem,tiposem)
     avioncito.dispara.push(semi2);
     
 }
@@ -569,11 +583,13 @@ function drawSemi2()
 
 function generar_arbolito()
 {
+    definirArbolito();
     sonido_sem.pause();
     sonido_arbolito.play();
-    var arbolito=new arbolito_1();
+    var arbolito=new arbolito_1(tipoarbol);
     arboles.push(arbolito);
-    niv_conta=niv_conta-10;
+    descontar_score()
+    
 }
 
 function drawArbol()
@@ -586,11 +602,50 @@ function drawArbol()
 
 function generar_arbolito2()
 {
+    definirArbolito();
     sonido_sem.pause();
     sonido_arbolito.play();
-    var arbolito2=new arbolito_1();
+    var arbolito2=new arbolito_1(tipoarbol);
     arboles2.push(arbolito2);
-    niv_conta2=niv_conta2-10;
+    descontarScore2();
+}
+
+function descontar_score()
+{
+    if(img==1)
+    {
+        niv_conta=niv_conta-7
+        reductorTiempo=reductorTiempo+3
+    }
+    if(img==2)
+    {
+        niv_conta=niv_conta-3
+        reductorTiempo=reductorTiempo+2
+    }
+    if(img==3)
+    {
+        niv_conta=niv_conta-4
+        reductorTiempo=reductorTiempo+1
+    }
+}
+
+function descontarScore2()
+{
+    if(img==1)
+    {
+        niv_conta2=niv_conta2-7
+        reductorTiempo=reductorTiempo+3
+    }
+    if(img==2)
+    {
+        niv_conta2=niv_conta2-3
+        reductorTiempo=reductorTiempo+2
+    }
+    if(img==3)
+    {
+        niv_conta2=niv_conta2-4
+        reductorTiempo=reductorTiempo+1
+    }
 }
 
 function drawArbol2()
@@ -705,6 +760,24 @@ function defini_dif()
     }
 }
 
+function definirArbolito()
+{
+    console.log(tiposem)
+    if(img==1)
+    {
+        console.log("si entro")
+        tipoarbol=images.arbolito_1;
+    }
+    if(img==2)
+    {
+        tipoarbol=images.arbolito_2;
+    }
+    if(img==3)
+    {
+        tipoarbol=images.arbolito_3;
+    }
+}
+
 function defini_dif2()
 {
     
@@ -801,8 +874,35 @@ function defini_dif2()
         }
     }
 }
-   
-       
+
+function random_imgsem()
+{
+    img=Math.floor(Math.random()*3);
+
+    img=img+1;
+    //console.log(img)
+    if(img==1)
+    {
+        tiposem=images.semilla1;
+    }
+    if(img==2)
+    {
+        tiposem=images.semilla2;
+    }
+    if(img==3)
+    {
+        tiposem=images.semilla3;
+    }
+
+}
+function Random_y()
+{
+    velYSem=Math.floor(Math.random()*6);
+    if(velYSem<3)
+    {
+        velYSem=velYSem+3;
+    }
+}
 
 function ran_posx()
 {
@@ -928,6 +1028,7 @@ function checarTiempo()
             sound.pause();
             //console.log(instru.id)
             jugador1=2;
+            reductorTiempo=30
             avioncito.dispara=[];
             nubes=images.nubesita;
             
