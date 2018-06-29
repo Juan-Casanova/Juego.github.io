@@ -15,7 +15,15 @@ var frames2=0;
 var images=
     {
         fondo1:"./imagenes/fondo1.png",
+        fondo2:"./imagenes/fondo2.png",
+        fondo3:"./imagenes/fondo3.png",
+        fondo4:"./imagenes/fondo4.png",
+        fondo5:"./imagenes/fondo5.png",
         nubesita:"./imagenes/nubesita1.png",
+        nubesita2:"./imagenes/nubesita2.png",
+        nubesita3:"./imagenes/nubesita3.png",
+        nubesita4:"./imagenes/nubesita4.png",
+        nubesita5:"./imagenes/nubesita5.png",
         arbolito_1:"./imagenes/Arbol_grande.png",
         avion:"./imagenes/avioncito.png",
         semilla1:"./imagenes/semilla.png"
@@ -45,17 +53,27 @@ var numRanPosX=0;
 var numRanPosY=0;
 var numRanVel=5;
 var llendo_der=false;
-var reductorTiempo=10;
+var reductorTiempo=30;
 var niv1=0;
 var niv2=0;
 var niv3=0;
 var niv4=0;
 var niv5=0;
+var niv11=0;
+var niv22=0;
+var niv33=0;
+var niv44=0;
+var niv55=0;
+var nubes=images.nubesita;
+var cielo=images.fondo1;
+
+
+
 
 var sound = new Audio();
 var sonido_sem=new Audio();
 var sonido_des_sem=new Audio();
-var sonido_inicio=new Audio("./sonidos/musica_disparo.mp3");
+var sonido_inicio=new Audio();
 var sonido_juagador1_termino=new Audio("./sonidos/terminoJugador1.mp3");
 //var sonido_juagador2_termino=new Audio("./sonidos/terminoJugador2.mp3");
 var sonido_ganador1=new Audio("./sonidos/ganaJugador1.mp3");
@@ -67,7 +85,7 @@ var sonido_arbolito=new Audio("./sonidos/crece_arbol.mp3")
 sound.src = "./sonidos/musica_fondo.mp3"
 sonido_des_sem.src="./sonidos/bomba.mp3"
 sonido_sem.src="./sonidos/musica_disparo.mp3"
-//sonido_inicio.src="./sonidos/inicio.mp3"
+sonido_inicio.src="./sonidos/inicio.mp3"
 
 //sonido_juagador1_termino.src="./sonidos/terminoJugador1.mp3";
 sound.loop = true;
@@ -92,14 +110,14 @@ sonido_des_sem.currentTime=0
 
 class back
 {
-    constructor()
+    constructor(cielo=images.fondo1)
     {
         this.x = 0;
         this.y = 0;
         this.width = canvas.width;
         this.height = canvas.height;
         this.image = new Image();
-        this.image.src = images.fondo1;
+        this.image.src = cielo;
         this.image.onload = function(){
             this.draw();
         }.bind(this)
@@ -174,7 +192,7 @@ class semilla
         this.der=+20;
         this.izq=-20
         this.image=new Image();
-        this.vY=+2;
+        this.vY=+5;
         this.image.src=images.semilla1;
         this.image.onload=function()
         {
@@ -349,7 +367,7 @@ class Texto_tiempo2
 
 class nube_der_izq
 {
-    constructor(xnub=0,ynub=0,nubw=130,nubh=80,vel=5)
+    constructor(xnub=0,ynub=0,nubw=130,nubh=80,vel=5,nub=images.nubesita5)
     {
         this.x=xnub;
         this.y=ynub;
@@ -357,7 +375,7 @@ class nube_der_izq
         this.height=nubh;
         this.image=new Image();
         this.vY=vel;
-        this.image.src=images.nubesita;
+        this.image.src=nub;
 
     }
 
@@ -426,6 +444,7 @@ function update()
         frames++;
         //console.log(frames);
         ctx.clearRect(0,0,canvas.width,canvas.height);
+        defini_dif();
         fondito.draw();
         avioncito.draw();
        // niv_conta++;
@@ -448,6 +467,7 @@ function update()
         //console.log(numRanAlto);
         //console.log("la dif es "+dificultad_jug1);
        // checarColision();
+       //console.log(cielo)
        colision();
 
     }
@@ -458,7 +478,7 @@ function start()
         nubder=[];
         //sonido_inicio.pause();
         sound.play();
-
+        
         num_sem=0
         ctx.clearRect(0,0,canvas.width,canvas.height);
         if(interval) return;
@@ -473,6 +493,7 @@ function start()
     {
         frames2++;
         ctx.clearRect(0,0,canvas.width,canvas.height);
+        defini_dif2();
         fondito.draw();
         avioncito.draw();
         textito2_tiempo.draw();
@@ -484,20 +505,21 @@ function start()
         //console.log(niv_conta2)
         //defini_dif2();
         //|console.log(dificultad_jug2)
-        defini_dif2();
+        defini_dif2();  
         dibujarNube();
-        console.log("jaja"+niv_conta2)
-        console.log(nubder.length)
+        //console.log("jaja"+niv_conta2)
+        console.log(cielo)
         colision()
     }
 
 function start2()
     {
+        //nubes=images.nubecita;
        restaurarVar();
         num_sem2=0;
         sonido_sem.pause();
         sound.play();
-
+        console.log(nubes)
         ctx.clearRect(0,0,canvas.width,canvas.height);
         if(interval2) return;
         interval2 = setInterval(update2, 1000/60);
@@ -587,6 +609,7 @@ function restaurarVar()
     niv4=0;
     niv5=0;
     nubder=[];
+    //nubes=images.nubesita;
 }
 
 function defini_dif()
@@ -595,12 +618,15 @@ function defini_dif()
     if(niv_conta>=80)
     {
         //console.log("si entra wey")
-        dificultad_jug1=10
+        dificultad_jug1=3
         if(niv1==0)
         {
             nubder=[]
             crearNubeDeraIzq();
             niv1=1
+            nubes=images.nubesita;
+            cielo=images.fondo1
+
         }
         
     }
@@ -608,12 +634,15 @@ function defini_dif()
     {
         if(niv_conta>=60)
         {
-            dificultad_jug1=15
+            dificultad_jug1=6
                     if(niv2==0)
                 {
                     nubder=[]
                     crearNubeDeraIzq();
                     niv2=1
+                    nubes=images.nubesita2;
+                    cielo=images.fondo2
+
                        
                 }
         }
@@ -621,13 +650,16 @@ function defini_dif()
         {
             if(niv_conta>=40)
             {
-                dificultad_jug1=20
+                dificultad_jug1=9
                 if(niv3==0)
                     {
                         nubder=[]
                         crearNubeDeraIzq();
                     
                         niv3=1
+                        nubes=images.nubesita3;
+                        cielo=images.fondo3
+
                 
                     
                     }
@@ -636,13 +668,16 @@ function defini_dif()
             {
                 if(niv_conta>=20)
                 {
-                    dificultad_jug1=25
+                    dificultad_jug1=12
                            
                     if(niv4==0)
                          {
                              nubder=[]
                             crearNubeDeraIzq();
                             niv4=1
+                            nubes=images.nubesita4;
+                            cielo=images.fondo4
+
                 
                     
                         }
@@ -651,12 +686,15 @@ function defini_dif()
                 {
                     if(niv_conta>=0)
                     {
-                        dificultad_jug1=30
+                        dificultad_jug1=15
                         if(niv5==0)
                         {
                             nubder=[]
                             crearNubeDeraIzq();
                             niv5=1
+                            nubes=images.nubesita5;
+                            cielo=images.fondo5
+
         
                     
                         }
@@ -672,13 +710,19 @@ function defini_dif2()
     
     if(niv_conta2>=80)
     {
-        //console.log("si entra wey")
-        dificultad_jug2=10
-        if(niv1==0)
+       // console.log("si entra wey")
+        dificultad_jug2=3
+        if(niv11==0)
         {
+            //console.log("que si entra wey")
             nubder=[]
             crearNubeju2();
-            niv1=1
+            niv11=1
+            nubes=images.nubesita;
+            console.log(nubes)
+            cielo=images.fondo1
+
+
         }
         
     }
@@ -686,12 +730,15 @@ function defini_dif2()
     {
         if(niv_conta2>=60)
         {
-            dificultad_jug2=15
-                    if(niv2==0)
+            dificultad_jug2=6
+                    if(niv22==0)
                 {
                     nubder=[]
                     crearNubeju2();
-                    niv2=1
+                    niv22=1
+                    nubes=images.nubesita2;
+                    cielo=images.fondo2
+
                        
                 }
         }
@@ -699,13 +746,16 @@ function defini_dif2()
         {
             if(niv_conta2>=40)
             {
-                dificultad_jug2=20
-                if(niv3==0)
+                dificultad_jug2=9
+                if(niv33==0)
                     {
                         nubder=[]
                         crearNubeju2();
                     
-                        niv3=1
+                        niv33=1
+                        nubes=images.nubesita3;
+                        cielo=images.fondo3
+
                 
                     
                     }
@@ -714,13 +764,16 @@ function defini_dif2()
             {
                 if(niv_conta2>=20)
                 {
-                    dificultad_jug2=25
+                    dificultad_jug2=12
                            
-                    if(niv4==0)
+                    if(niv44==0)
                          {
                              nubder=[]
                             crearNubeju2();
-                            niv4=1
+                            niv44=1
+                            nubes=images.nubesita4;
+                            cielo=images.fondo4
+
                 
                     
                         }
@@ -729,12 +782,16 @@ function defini_dif2()
                 {
                     if(niv_conta2>=0)
                     {
-                        dificultad_jug2=30
-                        if(niv5==0)
+                        dificultad_jug2=15
+                        if(niv55==0)
                         {
                             nubder=[]
                             crearNubeju2();
-                            niv5=1
+                            niv55=1
+                            nubes=images.nubesita5;
+                            cielo=images.fondo5
+
+
         
                     
                         }
@@ -779,7 +836,7 @@ function ran_Alto()
 }
 function ran_Vel()
 {
-    numRanVel=Math.random()*7;
+    numRanVel=Math.random()*10;
    
 }
 
@@ -795,7 +852,7 @@ function crearNubeDeraIzq()
         ran_posx();
         ran_posy();
         ran_Vel();
-        var nubecita=new nube_der_izq(numRanPosX,numRanPosY,numRanAncho,numRanAlto,numRanVel)
+        var nubecita=new nube_der_izq(numRanPosX,numRanPosY,numRanAncho,numRanAlto,numRanVel,nubes)
         nubder.push(nubecita);
     }
     
@@ -812,7 +869,7 @@ function crearNubeju2()
         ran_posx();
         ran_posy();
         ran_Vel();
-        var nubecita=new nube_der_izq(numRanPosX,numRanPosY,numRanAncho,numRanAlto,numRanVel)
+        var nubecita=new nube_der_izq(numRanPosX,numRanPosY,numRanAncho,numRanAlto,numRanVel,nubes)
         nubder.push(nubecita);
     }
     
@@ -872,7 +929,7 @@ function checarTiempo()
             //console.log(instru.id)
             jugador1=2;
             avioncito.dispara=[];
-            
+            nubes=images.nubesita;
             
        
         //start2();

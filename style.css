@@ -3,7 +3,7 @@ body
     padding: 0;
     margin: 0;
     /*background-color: rgb(24, 178,0);*/
-    background-color: olivedrab;          
+    background-color: black;          
 }
 
 section
@@ -16,9 +16,11 @@ section
 }
 div
 {
-    font-size: 30px;
+    font-size: 50px;
     height: 50px;
-    background-color: aqua;
+    font-style: bold;
+    color: #ffffff;
+    /*background-color: aqua;*/
 }
 
 #canvas
