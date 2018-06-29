@@ -55,7 +55,7 @@ var niv5=0;
 var sound = new Audio();
 var sonido_sem=new Audio();
 var sonido_des_sem=new Audio();
-var sonido_inicio=new Audio();
+var sonido_inicio=new Audio("./sonidos/musica_disparo.mp3");
 var sonido_juagador1_termino=new Audio("./sonidos/terminoJugador1.mp3");
 //var sonido_juagador2_termino=new Audio("./sonidos/terminoJugador2.mp3");
 var sonido_ganador1=new Audio("./sonidos/ganaJugador1.mp3");
@@ -67,7 +67,7 @@ var sonido_arbolito=new Audio("./sonidos/crece_arbol.mp3")
 sound.src = "./sonidos/musica_fondo.mp3"
 sonido_des_sem.src="./sonidos/bomba.mp3"
 sonido_sem.src="./sonidos/musica_disparo.mp3"
-sonido_inicio.src="./sonidos/inicio.mp3"
+//sonido_inicio.src="./sonidos/inicio.mp3"
 
 //sonido_juagador1_termino.src="./sonidos/terminoJugador1.mp3";
 sound.loop = true;
@@ -920,6 +920,11 @@ function checarGanador()
     }
 }
 
+/*function inicia()
+{
+    sonido_inicio.play();
+}*/
+
 
 
 
@@ -938,36 +943,41 @@ addEventListener("keydown",function(e)
     {
         if(jugador1==1)
         {
-            if(num_sem==0)
+            if(avioncito.x>0)
             {
-                //console.log("izq");
-                avioncito.avionIzq();
-            }
-            else
-            {
-                //console.log("pu")
-                //semilla.semi.semiIzq();
-                avioncito.dispara.forEach(function(b) {
-                    b.semiIzq();});
+                if(num_sem==0)
+                {
+                    //console.log("izq");
+                    avioncito.avionIzq();
+                }
+                else
+                {
+                    //console.log("pu")
+                    //semilla.semi.semiIzq();
+                    avioncito.dispara.forEach(function(b) {
+                        b.semiIzq();});
 
+                }
             }    
         }
         else
         {
-
-            if(num_sem2==0)
+            if(avioncito.x>0)
             {
-                //console.log("izq");
-                avioncito.avionIzq();
-            }
-            else
-            {
-                //console.log("pu")
-                //semilla.semi.semiIzq();
-                avioncito.dispara.forEach(function(b) {
-                    b.semiIzq();});
+                if(num_sem2==0)
+                {
+                    //console.log("izq");
+                    avioncito.avionIzq();
+                }
+                else
+                {
+                    //console.log("pu")
+                    //semilla.semi.semiIzq();
+                    avioncito.dispara.forEach(function(b) {
+                        b.semiIzq();});
 
-            }  
+                } 
+            } 
         }    
     }
     if(e.keyCode===39)
@@ -984,30 +994,44 @@ addEventListener("keydown",function(e)
         */
         if(jugador1==1)
         {
-            if(num_sem==0)
+            if(avioncito.x<canvas.width-100)
             {
-                //console.log("sider");
-                avioncito.avionDer();
-            }
-            else
-            {
-                //avioncito.dispara.semiDer();
-                avioncito.dispara.forEach(function(b) {
-                    b.semiDer();});
+                if(num_sem==0)
+                {
+                    //console.log("sider");
+                    avioncito.avionDer();
+                }
+                else
+                {
+                    //avioncito.dispara.semiDer();
+                    avioncito.dispara.forEach(function(b) {
+                        if(b.x<canvas.width-35)
+                        {
+                            b.semiDer();
+                        }
+                    });
+                }
             }
         }
         else
         {
-            if(num_sem2==0)
+            if(avioncito.x<canvas.width-100)
             {
-                //console.log("sider");
-                avioncito.avionDer();
-            }
-            else
-            {
-                //avioncito.dispara.semiDer();
-                avioncito.dispara.forEach(function(b) {
-                    b.semiDer();});
+                if(num_sem2==0)
+                {
+                    //console.log("sider");
+                    avioncito.avionDer();
+                }
+                else
+                {
+                    //avioncito.dispara.semiDer();
+                    avioncito.dispara.forEach(function(b) {
+                        if(b.x<canvas.width-35)
+                        {
+                            b.semiDer();
+                        }
+                    });
+                }
             }
         }
     }
@@ -1080,6 +1104,8 @@ addEventListener("keydown",function(e)
         sonido_inicio.play();
     }
 });
+
+//inicia();
 
 /*document.getElementById('titulo').addEventListener('click', function(){
     this.innerHTML = "ESTA JUGANDO EL JUGADOR 1"
