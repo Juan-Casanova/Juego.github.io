@@ -14,8 +14,8 @@ var frames=0;
 var frames2=0;
 var images=
     {
-        fondo:"./imagenes/sin_luz.png",
-        nubesita:"./imagenes/nubesita.png",
+        fondo1:"./imagenes/fondo1.png",
+        nubesita:"./imagenes/nubesita1.png",
         arbolito_1:"./imagenes/Arbol_grande.png",
         avion:"./imagenes/avioncito.png",
         semilla1:"./imagenes/semilla.png"
@@ -52,6 +52,19 @@ var niv3=0;
 var niv4=0;
 var niv5=0;
 
+var sound = new Audio();
+var sonido_sem=new Audio();
+var sonido_des_sem=new Audio();
+
+sound.src = "./sonidos/musica_fondo.mp3"
+sonido_des_sem.src="./sonidos/bomba.mp3"
+sonido_sem.src="./sonidos/musica_disparo.mp3"
+sound.loop = true;
+sonido_sem.loop=true;
+sound.currentTime = 0
+sonido_des_sem.currentTime=0
+//sonido_sem.currentTime=0;
+
 
 
 
@@ -70,7 +83,7 @@ class back
         this.width = canvas.width;
         this.height = canvas.height;
         this.image = new Image();
-        this.image.src = images.fondo;
+        this.image.src = images.fondo1;
         this.image.onload = function(){
             this.draw();
         }.bind(this)
@@ -427,6 +440,7 @@ function start()
     {
         //crearNubeDeraIzq();
         nubder=[];
+        sound.play();
 
         num_sem=0
         ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -457,6 +471,7 @@ function start()
         dibujarNube();
         console.log("jaja"+niv_conta2)
         console.log(nubder.length)
+        colision()
     }
 
 function start2()
@@ -477,8 +492,11 @@ function start2()
 
     function generarSemilla()
 {
+    
     var semi=new semilla(avioncito)
     avioncito.dispara.push(semi);
+    sound.pause();
+    sonido_sem.play();  
     
 }
 
@@ -493,6 +511,7 @@ function drawSemi()
 
 function generarSemilla2()
 {
+    sonido_sem.play();
     var semi2=new semilla(avioncito)
     avioncito.dispara.push(semi2);
     
@@ -563,7 +582,7 @@ function defini_dif()
     {
         if(niv_conta>=60)
         {
-            dificultad_jug1=20
+            dificultad_jug1=15
                     if(niv2==0)
                 {
                     nubder=[]
@@ -576,7 +595,7 @@ function defini_dif()
         {
             if(niv_conta>=40)
             {
-                dificultad_jug1=30
+                dificultad_jug1=20
                 if(niv3==0)
                     {
                         nubder=[]
@@ -591,7 +610,7 @@ function defini_dif()
             {
                 if(niv_conta>=20)
                 {
-                    dificultad_jug1=40
+                    dificultad_jug1=25
                            
                     if(niv4==0)
                          {
@@ -606,7 +625,7 @@ function defini_dif()
                 {
                     if(niv_conta>=0)
                     {
-                        dificultad_jug1=50
+                        dificultad_jug1=30
                         if(niv5==0)
                         {
                             nubder=[]
@@ -641,7 +660,7 @@ function defini_dif2()
     {
         if(niv_conta2>=60)
         {
-            dificultad_jug2=20
+            dificultad_jug2=15
                     if(niv2==0)
                 {
                     nubder=[]
@@ -654,7 +673,7 @@ function defini_dif2()
         {
             if(niv_conta2>=40)
             {
-                dificultad_jug2=30
+                dificultad_jug2=20
                 if(niv3==0)
                     {
                         nubder=[]
@@ -669,7 +688,7 @@ function defini_dif2()
             {
                 if(niv_conta2>=20)
                 {
-                    dificultad_jug2=40
+                    dificultad_jug2=25
                            
                     if(niv4==0)
                          {
@@ -684,7 +703,7 @@ function defini_dif2()
                 {
                     if(niv_conta2>=0)
                     {
-                        dificultad_jug2=50
+                        dificultad_jug2=30
                         if(niv5==0)
                         {
                             nubder=[]
@@ -790,7 +809,10 @@ function colision()
             if(b.estatocando(c))
             {
                 num_sem=0;
+                num_sem2=0
                 avioncito.dispara=[]
+                sonido_sem.pause();
+                sound.play();
             }
         })
     })
@@ -993,10 +1015,12 @@ addEventListener("keydown",function(e)
             console.log("ja")
             jugador1=1;
             
+            
                 document.getElementById("titulo").innerHTML = "ESTA JUGANDO EL JUGADOR 1"
                 start();
                 //instru.id = "yaNo";
                 //console.log(instru.id)
+            
         }
                 
               
