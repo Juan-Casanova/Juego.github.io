@@ -45,7 +45,7 @@ var numRanPosX=0;
 var numRanPosY=0;
 var numRanVel=5;
 var llendo_der=false;
-var reductorTiempo=30;
+var reductorTiempo=10;
 var niv1=0;
 var niv2=0;
 var niv3=0;
@@ -55,12 +55,28 @@ var niv5=0;
 var sound = new Audio();
 var sonido_sem=new Audio();
 var sonido_des_sem=new Audio();
+var sonido_inicio=new Audio();
+var sonido_juagador1_termino=new Audio("./sonidos/terminoJugador1.mp3");
+//var sonido_juagador2_termino=new Audio("./sonidos/terminoJugador2.mp3");
+var sonido_ganador1=new Audio("./sonidos/ganaJugador1.mp3");
+var sonido_ganador2=new Audio("./sonidos/ganaJugador2.mp3");
+var sonido_empate= new Audio("./sonidos/Empate.mp3")
+var sonido_arbolito=new Audio("./sonidos/crece_arbol.mp3")
+//var sonido_inicio= new Audio("./sonidos/inicio.mp3")
 
 sound.src = "./sonidos/musica_fondo.mp3"
 sonido_des_sem.src="./sonidos/bomba.mp3"
 sonido_sem.src="./sonidos/musica_disparo.mp3"
+sonido_inicio.src="./sonidos/inicio.mp3"
+
+//sonido_juagador1_termino.src="./sonidos/terminoJugador1.mp3";
 sound.loop = true;
 sonido_sem.loop=true;
+sonido_juagador1_termino.preload=true;
+//sonido_juagador1_termino.autoplay=true;
+
+// sonido_inicio.play();
+
 sound.currentTime = 0
 sonido_des_sem.currentTime=0
 //sonido_sem.currentTime=0;
@@ -440,6 +456,7 @@ function start()
     {
         //crearNubeDeraIzq();
         nubder=[];
+        //sonido_inicio.pause();
         sound.play();
 
         num_sem=0
@@ -478,6 +495,9 @@ function start2()
     {
        restaurarVar();
         num_sem2=0;
+        sonido_sem.pause();
+        sound.play();
+
         ctx.clearRect(0,0,canvas.width,canvas.height);
         if(interval2) return;
         interval2 = setInterval(update2, 1000/60);
@@ -527,6 +547,8 @@ function drawSemi2()
 
 function generar_arbolito()
 {
+    sonido_sem.pause();
+    sonido_arbolito.play();
     var arbolito=new arbolito_1();
     arboles.push(arbolito);
     niv_conta=niv_conta-10;
@@ -534,6 +556,7 @@ function generar_arbolito()
 
 function drawArbol()
 {
+  
     arboles.forEach(function(b){
         b.draw();
     })
@@ -541,6 +564,8 @@ function drawArbol()
 
 function generar_arbolito2()
 {
+    sonido_sem.pause();
+    sonido_arbolito.play();
     var arbolito2=new arbolito_1();
     arboles2.push(arbolito2);
     niv_conta2=niv_conta2-10;
@@ -548,6 +573,7 @@ function generar_arbolito2()
 
 function drawArbol2()
 {
+    
     arboles2.forEach(function(b){
         b.draw();
     })
@@ -808,6 +834,8 @@ function colision()
         avioncito.dispara.forEach(function(c){
             if(b.estatocando(c))
             {
+                sonido_sem.pause();
+                sonido_des_sem.play();
                 num_sem=0;
                 num_sem2=0
                 avioncito.dispara=[]
@@ -833,11 +861,14 @@ function checarTiempo()
 {
     if(tiempo==reductorTiempo)
     {
+        
         document.getElementById("titulo").innerHTML="Segundo Jugador presiona 2 para comenzar";
         
             //this.innerHTML = "presina"
             
-            
+            sonido_juagador1_termino.play();
+            sonido_sem.pause();
+            sound.pause();
             //console.log(instru.id)
             jugador1=2;
             avioncito.dispara=[];
@@ -856,6 +887,9 @@ function checarTiempo2()
 {
     if(tiempo2==reductorTiempo)
     {
+        //sonido_juagador2_termino.play();
+        sonido_sem.pause();
+        sound.pause();
         checarGanador();
         clearInterval(interval2);
     }
@@ -867,18 +901,21 @@ function checarGanador()
     {
         
         document.getElementById("titulo").innerHTML="GANO EL JUGADOR UNO";
+        sonido_ganador1.play();
         //instru.id = "seTermino";
     }
     if(niv_conta2<niv_conta)
     {
         
         document.getElementById("titulo").innerHTML="GANO EL JUGADOR DOS";
+        sonido_ganador2.play();
         //instru.id = "seTermino";
     }
     if(niv_conta==niv_conta2)
     {
         
         document.getElementById("titulo").innerHTML="HAN QUEDADO EMPATE";
+        sonido_empate.play();
         //instru.id = "seTermino";
     }
 }
@@ -1036,6 +1073,11 @@ addEventListener("keydown",function(e)
             start2();
         }
         
+    }
+
+    if(e.keyCode===73)
+    {
+        sonido_inicio.play();
     }
 });
 
